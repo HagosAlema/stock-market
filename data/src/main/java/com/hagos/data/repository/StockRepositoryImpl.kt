@@ -60,7 +60,6 @@ class StockRepositoryImpl @Inject constructor(
     override suspend fun getCompanyInfo(symbol: String): CompanyInfo {
         try {
             val result = api.getCompanyInfo(symbol)
-            Log.e("RESULT: ", result.toString())
             return result.toCompanyInfo()
         } catch (t: Throwable) {
             t.printStackTrace()

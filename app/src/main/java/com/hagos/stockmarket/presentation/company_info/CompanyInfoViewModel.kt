@@ -27,7 +27,7 @@ class CompanyInfoViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            val symbol = "TSLA" //savedStateHandle.get<String>("symbol") ?: return@launch
+            val symbol = savedStateHandle.get<String>("symbol") ?: return@launch //TODO pass argument
             state = state.copy(isLoading = true)
             val companyInfoResult = async {  companyInfoUseCase.invoke(symbol) }
             val intradayInfoResult = async {  intradayInfoUseCase.invoke(symbol) }
@@ -35,7 +35,6 @@ class CompanyInfoViewModel @Inject constructor(
             companyInfoResult.await().collectLatest {
                 when(it) {
                     is Resource.Success -> {
-                        Log.e("Company: ", it.data.toString())
                         state = state.copy(
                             company = it.data,
                             isLoading = false,
