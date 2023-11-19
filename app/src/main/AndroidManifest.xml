@@ -20,7 +20,8 @@
             android:exported="true"
             android:noHistory="true"
             android:label="@string/app_name"
-            android:theme="@style/Theme.StockMarket">
+            android:theme="@style/Theme.StockMarket"
+            android:screenOrientation="fullSensor">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

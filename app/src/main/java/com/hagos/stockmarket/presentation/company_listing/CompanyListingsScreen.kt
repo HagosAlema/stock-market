@@ -37,7 +37,7 @@ fun CompanyListingsScreen(
                 .padding(16.dp)
                 .fillMaxWidth(),
             placeholder = {
-                Text(text = "Searching...")
+                Text(text = "Search")
             },
             maxLines = 1,
             singleLine = true
