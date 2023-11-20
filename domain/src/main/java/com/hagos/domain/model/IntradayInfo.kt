@@ -3,6 +3,6 @@ package com.hagos.domain.model
 import java.time.LocalDateTime
 
 data class IntradayInfo(
-    val timestamp: LocalDateTime,
+    val date: LocalDateTime,
     val close: Double
 )

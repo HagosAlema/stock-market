@@ -19,7 +19,7 @@ import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 @Composable
 fun CompanyListingsScreen(
     viewModel: CompanyListingViewModel = hiltViewModel(),
-    navigate: () -> Unit
+    navigate: (symbol: String) -> Unit
 ) {
     val swipeRefreshState = rememberSwipeRefreshState(isRefreshing = viewModel.state.isRefreshing)
     val state = viewModel.state
@@ -56,7 +56,7 @@ fun CompanyListingsScreen(
                         modifier = Modifier
                             .fillMaxWidth()
                             .clickable {
-                                navigate()
+                                navigate(company.symbol)
                             }
                             .padding(16.dp)
                     )

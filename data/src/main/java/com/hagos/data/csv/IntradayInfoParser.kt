@@ -2,14 +2,13 @@ package com.hagos.data.csv
 
 import com.hagos.data.mapper.toIntradayInfo
 import com.hagos.data.remote.dto.IntradayInfoDto
-import com.hagos.domain.model.CompanyListing
 import com.hagos.domain.model.IntradayInfo
 import com.opencsv.CSVReader
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.InputStream
 import java.io.InputStreamReader
-import java.time.LocalDateTime
+import java.time.LocalDate
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -28,9 +27,9 @@ class IntradayInfoParser @Inject constructor() : CSVParser<IntradayInfo> {
                     dto.toIntradayInfo()
                 }
                 .filter {
-                    it.timestamp.dayOfMonth == LocalDateTime.now().minusDays(2).dayOfMonth
+                    it.date.dayOfMonth == LocalDate.now().minusDays(4).dayOfMonth
                 }.sortedBy {
-                    it.timestamp.hour
+                    it.date.hour
                 }
                 .also {
                     csvReader.close()

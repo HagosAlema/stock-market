@@ -50,7 +50,7 @@ fun StockChart(
         val spacePerHour = (size.width - spacing) / infos.size
         (0 until infos.size-1 step 2).forEach {i->
             val info = infos[i]
-            val hour = info.timestamp.hour
+            val hour = info.date.hour
             drawContext.canvas.nativeCanvas.apply {
                 drawText(
                     hour.toString(),
@@ -61,13 +61,13 @@ fun StockChart(
             }
         }
 
-        val priceStep = (upperValue - lowerValue) / 4f
-        (1..4).forEach{i->
+        val priceStep = (upperValue - lowerValue) / 5f
+        (0..4).forEach{i->
             drawContext.canvas.nativeCanvas.apply {
                 drawText(
                     round(lowerValue + priceStep*i).toString(),
                     30f,
-                    size.height - spacing - i*size.height/4f,
+                    size.height - spacing - i*size.height/5f,
                     textPaint
                 )
             }
@@ -78,8 +78,8 @@ fun StockChart(
             for (i in infos.indices) {
                 val info = infos[i]
                 val nextInfo = infos.getOrNull(i+1) ?: infos.last()
-                val leftRatio = (info.close - lowerValue/(upperValue - lowerValue))
-                val rightRatio = (nextInfo.close - lowerValue/ (upperValue - lowerValue))
+                val leftRatio = (info.close - lowerValue)/(upperValue - lowerValue)
+                val rightRatio = (nextInfo.close - lowerValue)/ (upperValue - lowerValue)
 
                 val x1 = spacing + i * spacePerHour
                 val y1 = height - spacing - (leftRatio * height).toFloat()

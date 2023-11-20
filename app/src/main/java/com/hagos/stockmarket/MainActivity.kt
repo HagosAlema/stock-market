@@ -20,9 +20,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.view.WindowCompat
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgs
+import androidx.navigation.navArgument
 import com.hagos.stockmarket.presentation.company_info.CompanyInfoScreen
 import com.hagos.stockmarket.presentation.company_listing.CompanyListingsScreen
 import com.hagos.stockmarket.ui.theme.StackMarketTheme
@@ -50,11 +53,19 @@ class MainActivity : ComponentActivity() {
                                 route = "CompanyListing"
                             ){
                                 CompanyListingsScreen{
-                                    navController.navigate("CompanyInfo")
+                                    navController.navigate("CompanyInfo/${it}"){launchSingleTop = true}
                                 }
                             }
-                            composable(route = "CompanyInfo"){
-                                CompanyInfoScreen(symbol = "")
+                            composable(
+                                route = "CompanyInfo/{symbol}",
+                                arguments = listOf(navArgument(name = "symbol"){type = NavType.StringType})
+                            ){
+                                CompanyInfoScreen(
+                                    symbol = it.arguments?.getString("symbol") ?: "TSLA",
+                                    navigateBack = {
+                                        navController.popBackStack()
+                                    }
+                                )
                             }
                         }
                         )
