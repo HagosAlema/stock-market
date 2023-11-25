@@ -23,5 +23,5 @@ A stock market android app developed using multimodule clean architecture and je
 ### Screenshots
   <img src="https://github.com/HagosAlema/stock-market/blob/master/screenshots/img.png" alt="HOME" width="30%"/>
   <img src="https://github.com/HagosAlema/stock-market/blob/master/screenshots/stock_search.png" alt="Search" width="30%"/>
-  <img src="https://github.com/HagosAlema/stock-market/blob/master/screenshots/stick_detail.png" alt="Detail" width="30%"/>
+  <img src="https://github.com/HagosAlema/stock-market/blob/master/screenshots/stock_detail.png" alt="Detail" width="30%"/>
 
