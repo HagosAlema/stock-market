@@ -1,11 +1,14 @@
 package com.hagos.data.repository
 
-import android.util.Log
 import com.hagos.data.csv.CSVParser
+import com.hagos.data.local.IntradayInfoEntity
 import com.hagos.data.local.StockDao
 import com.hagos.data.mapper.toCompanyInfo
+import com.hagos.data.mapper.toCompanyInfoEntity
 import com.hagos.data.mapper.toCompanyListing
 import com.hagos.data.mapper.toCompanyListingEntity
+import com.hagos.data.mapper.toIntradayInfo
+import com.hagos.data.mapper.toIntradayInfoEntity
 import com.hagos.data.remote.StockApi
 import com.hagos.domain.model.CompanyInfo
 import com.hagos.domain.model.CompanyListing
@@ -47,20 +50,57 @@ class StockRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getIntradayInfo(symbol: String): List<IntradayInfo> {
+    override suspend fun getIntradayInfo(symbol: String, reload: Boolean): List<IntradayInfo> {
         try {
-            val response = api.getIntradayInfo(symbol)
-            return intradayParser.parse(response.byteStream())
+            return if (reload) {
+                val parsedData = getAndParseIntradayInfo(symbol)
+                parsedData.forEach {
+                    dao.insertIntradayInfo(it)
+                }
+
+                val dbResult = dao.getIntradayInfo(symbol)
+                dbResult.map { it.toIntradayInfo() }
+            } else {
+                val dbResult = dao.getIntradayInfo(symbol)
+                if (dbResult.isEmpty()) {
+                    val parsedData = getAndParseIntradayInfo(symbol)
+                    if (parsedData.isNotEmpty()) dao.clearIntradayInfo(symbol)
+                    parsedData.forEach {
+                        dao.insertIntradayInfo(it)
+                    }
+                    /**
+                     * TODO: if you want to implement a true SST, fetch data again from db
+                     * LIKE: dao.getIntradayInfo(symbol)
+                    **/
+                    parsedData.map { it.toIntradayInfo() }
+                } else {
+                    dbResult.map { it.toIntradayInfo() }
+                }
+            }
         } catch (t: Throwable) {
             t.printStackTrace()
             throw t
         }
     }
 
+
+    private suspend fun getAndParseIntradayInfo(symbol: String): List<IntradayInfoEntity> {
+        val response = api.getIntradayInfo(symbol)
+        val intradayInfoList = intradayParser.parse(response.byteStream())
+        return intradayInfoList.map { it.toIntradayInfoEntity(symbol) }
+    }
+
     override suspend fun getCompanyInfo(symbol: String): CompanyInfo {
-        try {
-            val result = api.getCompanyInfo(symbol)
-            return result.toCompanyInfo()
+        return try {
+            val dbResult = dao.getCompanyInfo(symbol)
+            if (dbResult != null) {
+                dbResult.toCompanyInfo()
+            } else {
+                val result = api.getCompanyInfo(symbol)
+                dao.insertCompanyInfo(result.toCompanyInfoEntity())
+                val companyInfoEntity = dao.getCompanyInfo(symbol)
+                companyInfoEntity?.toCompanyInfo() ?: CompanyInfo("", "", "", "", "")
+            }
         } catch (t: Throwable) {
             t.printStackTrace()
             throw t

@@ -12,9 +12,12 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowBackIos
+import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
@@ -26,12 +29,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.hagos.data.mapper.toDate
 import com.hagos.stockmarket.ui.theme.DarkBlue
 import com.hagos.stockmarket.ui.theme.noRippleClickable
 
@@ -65,7 +72,8 @@ fun CompanyInfoScreen(
                     Icon(
                         imageVector = Icons.Default.ArrowBack,
                         contentDescription = null,
-                        modifier = Modifier.size(48.dp)
+                        modifier = Modifier
+                            .size(48.dp)
                             .noRippleClickable {
                                 navigateBack()
                             }
@@ -117,7 +125,36 @@ fun CompanyInfoScreen(
                 )
                 if (state.stockInfos.isNotEmpty()) {
                     Spacer(modifier = Modifier.height(16.dp))
-                    Text(text = "Market Summary")
+                    Row (
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        Text(text = "Market Summary")
+                        Row(
+                            horizontalArrangement = Arrangement.spacedBy(4.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier
+                                .padding(horizontal = 4.dp, vertical = 2.dp)
+                        ) {
+                            Text(
+                                text = "Updated at: ${state.stockInfos.first().date.toDate()}",
+                                style = TextStyle(fontSize = 11.sp)
+                            )
+                            Icon(
+                                imageVector = Icons.Default.Refresh,
+                                contentDescription = null,
+                                modifier = Modifier
+                                    .size(24.dp)
+                                    .clip(CircleShape)
+                                    .clickable {
+                                        viewModel.onEvent(CompanyInfoEvent.FetchInfo(symbol, true))
+                                    }
+                                    .padding(2.dp)
+                            )
+                        }
+
+                    }
                     Spacer(modifier = Modifier.height(48.dp))
                     StockChart(
                         infos = state.stockInfos,

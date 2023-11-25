@@ -1,7 +1,7 @@
 [versions]
 accompanist-flowlayout = "0.17.0"
 accompanist-swiperefresh = "0.24.2-alpha"
-agp = "8.1.0"
+agp = "8.1.4"
 androidx-activity-compose = "1.6.0-alpha01"
 androidx-hilt-work = "1.1.0"
 coil-compose = "2.4.0"

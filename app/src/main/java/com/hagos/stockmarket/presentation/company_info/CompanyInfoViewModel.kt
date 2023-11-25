@@ -25,12 +25,11 @@ class CompanyInfoViewModel @Inject constructor(
 ): ViewModel() {
     var state by mutableStateOf(CompanyInfoState())
 
-    private fun fetchCompanyInfo(symbol: String){
+    private fun fetchCompanyInfo(symbol: String, reload: Boolean = false){
         viewModelScope.launch {
-//            val symbol = savedStateHandle.get<String>("symbol") ?: return@launch //TODO pass argument
             state = state.copy(isLoading = true)
             val companyInfoResult = async {  companyInfoUseCase.invoke(symbol) }
-            val intradayInfoResult = async {  intradayInfoUseCase.invoke(symbol) }
+            val intradayInfoResult = async {  intradayInfoUseCase.invoke(Pair(symbol, reload)) }
 
             companyInfoResult.await().collectLatest {
                 when(it) {
@@ -78,7 +77,7 @@ class CompanyInfoViewModel @Inject constructor(
     fun onEvent(event: CompanyInfoEvent){
         when(event){
             is CompanyInfoEvent.FetchInfo -> {
-                fetchCompanyInfo(event.symbol)
+                fetchCompanyInfo(event.symbol, event.reload)
             }
         }
     }

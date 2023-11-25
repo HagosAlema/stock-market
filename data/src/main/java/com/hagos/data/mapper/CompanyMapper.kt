@@ -1,5 +1,6 @@
 package com.hagos.data.mapper
 
+import com.hagos.data.local.CompanyInfoEntity
 import com.hagos.data.local.CompanyListingEntity
 import com.hagos.data.remote.dto.CompanyInfoDto
 import com.hagos.domain.model.CompanyInfo
@@ -20,5 +21,25 @@ fun CompanyInfoDto.toCompanyInfo(): CompanyInfo {
         name = name ?: "",
         country = country ?: "",
         industry = industry ?: ""
+    )
+}
+
+fun CompanyInfoDto.toCompanyInfoEntity(): CompanyInfoEntity {
+    return CompanyInfoEntity(
+        symbol = symbol ?: "",
+        description=description,
+        name=name,
+        country=country,
+        industry=industry
+    )
+}
+
+fun CompanyInfoEntity.toCompanyInfo(): CompanyInfo{
+    return CompanyInfo(
+        symbol,
+        description ?: "",
+        name ?: "",
+        country?: "",
+        industry ?: ""
     )
 }
