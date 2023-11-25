@@ -13,10 +13,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.ArrowBackIos
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Divider
@@ -33,8 +31,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -139,7 +137,11 @@ fun CompanyInfoScreen(
                         ) {
                             Text(
                                 text = "Updated at: ${state.stockInfos.first().date.toDate()}",
-                                style = TextStyle(fontSize = 11.sp)
+                                style = TextStyle(
+                                    fontSize = 11.sp,
+                                    lineHeight = 16.sp
+                                ),
+                                textDecoration = TextDecoration.Underline
                             )
                             Icon(
                                 imageVector = Icons.Default.Refresh,
