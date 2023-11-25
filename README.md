@@ -4,6 +4,7 @@ A stock market android app developed using multimodule clean architecture and je
 
 ## Tech stack
 - UI: Jetpack Compose
+- Navigation: Compose navigation
 - DB: Room Database
 - Network: Retrofit
 - DI: Hilt
@@ -11,6 +12,8 @@ A stock market android app developed using multimodule clean architecture and je
     - App Module: UI layer
     - Domain Module: Business Logic layer
     - Data Module: Data layer
+- Gradle Builder: Kotlin DSL
+- Dependency Management: Version catalogs
 ## Features
 - **Caching Using Room DB**: Data fetched from remote data source is saved in local database
 - **Single Source of Truth**: Data source models and domain entities are mapped using mappers to avoid easy data tampering
