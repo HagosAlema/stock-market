@@ -13,13 +13,9 @@ import androidx.sqlite.db.SupportSQLiteDatabase
         CompanyInfoEntity::class,
         IntradayInfoEntity::class
     ],
-    version = 4,
+    version = 1,
     exportSchema = true,
-    autoMigrations = [
-        AutoMigration(from = 1, to = 2, spec = DatabaseAutoMigrate::class),
-        AutoMigration(from = 2, to = 3, spec = DatabaseAutoMigrate::class),
-        AutoMigration(from = 3, to = 4, spec = DatabaseAutoMigrate::class)
-    ]
+    autoMigrations = []
 )
 abstract class StockDatabase : RoomDatabase() {
     abstract val dao: StockDao

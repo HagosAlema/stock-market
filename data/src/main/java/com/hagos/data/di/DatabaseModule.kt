@@ -19,12 +19,11 @@ object DatabaseModule {
     @Singleton
     fun providesStockDatabase(
         @ApplicationContext context: Context
-    ): StockDatabase = Room.databaseBuilder(
-            context,
-            StockDatabase::class.java,
-            "stock_db"
+    ): StockDatabase = Room.databaseBuilder<StockDatabase>(
+            context = context,
+            name = "stock_db"
         )
-        .fallbackToDestructiveMigration()
+        .fallbackToDestructiveMigration(dropAllTables = false)
         .build()
 
     @Provides

@@ -1,20 +1,21 @@
 @Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixed
 plugins {
     alias(libs.plugins.androidApplication)
-    alias(libs.plugins.com.android.library) apply false
-    alias(libs.plugins.kotlinAndroid)
-    alias(libs.plugins.dagger.hilt)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.hilt.android)
     alias(libs.plugins.ksp)
+    alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
     namespace = "com.hagos.stockmarket"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.hagos.stockmarket"
         minSdk = 26
-        targetSdk = 33
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 
@@ -34,22 +35,20 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
-    }
-    kotlinOptions {
-        jvmTarget = "1.8"
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     buildFeatures {
         compose = true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.3"
     }
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
+    }
+
+    kotlinOptions{
+        jvmTarget="17"
     }
 }
 
@@ -79,7 +78,7 @@ dependencies {
     implementation(libs.androidx.material.icons.extended)
     implementation(libs.accompanist.flowlayout)
     implementation(libs.androidx.paging.compose)
-    implementation(libs.androidx.activity.compose.v160alpha01)
+    implementation(libs.activity.compose)
     implementation(libs.accompanist.swiperefresh)
 
     // Coil
@@ -90,6 +89,8 @@ dependencies {
     ksp(libs.hilt.android.compiler)
     implementation(libs.hilt.navigation.compose)
     implementation(libs.androidx.work.runtime.ktx)
+    implementation(libs.hilt.work)
+    ksp(libs.hilt.compiler)
 
     implementation(libs.kotlinx.coroutines.android)
 

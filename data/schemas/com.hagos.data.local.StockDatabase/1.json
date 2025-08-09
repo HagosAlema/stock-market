@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "82f1e7f889a5135f48ea5be71407f8ba",
+    "identityHash": "f1bbba779a6ee827597558381bfb16c0",
     "entities": [
       {
         "tableName": "CompanyListingEntity",
@@ -11,8 +11,7 @@
           {
             "fieldPath": "id",
             "columnName": "id",
-            "affinity": "INTEGER",
-            "notNull": false
+            "affinity": "INTEGER"
           },
           {
             "fieldPath": "name",
@@ -42,21 +41,119 @@
         "indices": [
           {
             "name": "index_CompanyListingEntity_symbol",
-            "unique": false,
+            "unique": true,
             "columnNames": [
               "symbol"
             ],
             "orders": [],
-            "createSql": "CREATE INDEX IF NOT EXISTS `index_CompanyListingEntity_symbol` ON `${TABLE_NAME}` (`symbol`)"
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_CompanyListingEntity_symbol` ON `${TABLE_NAME}` (`symbol`)"
+          }
+        ]
+      },
+      {
+        "tableName": "CompanyInfoEntity",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`symbol` TEXT NOT NULL, `description` TEXT, `name` TEXT, `country` TEXT, `industry` TEXT, PRIMARY KEY(`symbol`), FOREIGN KEY(`symbol`) REFERENCES `CompanyListingEntity`(`symbol`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
+        "fields": [
+          {
+            "fieldPath": "symbol",
+            "columnName": "symbol",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "description",
+            "columnName": "description",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "country",
+            "columnName": "country",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "industry",
+            "columnName": "industry",
+            "affinity": "TEXT"
           }
         ],
-        "foreignKeys": []
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "symbol"
+          ]
+        },
+        "foreignKeys": [
+          {
+            "table": "CompanyListingEntity",
+            "onDelete": "NO ACTION",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "symbol"
+            ],
+            "referencedColumns": [
+              "symbol"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "IntradayInfoEntity",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `symbol` TEXT NOT NULL, `timestamp` TEXT NOT NULL, `close` REAL NOT NULL, FOREIGN KEY(`symbol`) REFERENCES `CompanyListingEntity`(`symbol`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "symbol",
+            "columnName": "symbol",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "timestamp",
+            "columnName": "timestamp",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "close",
+            "columnName": "close",
+            "affinity": "REAL",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "foreignKeys": [
+          {
+            "table": "CompanyListingEntity",
+            "onDelete": "NO ACTION",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "symbol"
+            ],
+            "referencedColumns": [
+              "symbol"
+            ]
+          }
+        ]
       }
     ],
-    "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '82f1e7f889a5135f48ea5be71407f8ba')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'f1bbba779a6ee827597558381bfb16c0')"
     ]
   }
 }

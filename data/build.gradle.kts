@@ -1,14 +1,15 @@
 @Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixed
 plugins {
     alias(libs.plugins.com.android.library)
-    alias(libs.plugins.kotlinAndroid)
-    alias(libs.plugins.dagger.hilt)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.hilt.android)
     alias(libs.plugins.ksp)
+    alias(libs.plugins.room)
 }
 
 android {
     namespace = "com.hagos.data"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         minSdk = 26
@@ -27,14 +28,14 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
-    kotlinOptions {
-        jvmTarget = "1.8"
+    room {
+        schemaDirectory("$projectDir/schemas")
     }
-    ksp {
-        arg("room.schemaLocation", "$projectDir/schemas") // Define the schema location
+    kotlinOptions{
+        jvmTarget="17"
     }
 }
 
@@ -55,6 +56,8 @@ dependencies {
     implementation(libs.hilt.android)
     ksp(libs.hilt.android.compiler)
     implementation(libs.androidx.work.runtime.ktx)
+    implementation(libs.hilt.work)
+    ksp(libs.hilt.compiler)
 
     // Retrofit
     implementation(libs.retrofit)
