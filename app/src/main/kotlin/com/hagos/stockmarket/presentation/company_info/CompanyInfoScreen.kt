@@ -37,8 +37,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.hagos.data.mapper.toDate
-import com.hagos.stockmarket.ui.theme.DarkBlue
-import com.hagos.stockmarket.ui.theme.noRippleClickable
+import com.hagos.stockmarket.theme.DarkBlue
+import com.hagos.stockmarket.theme.noRippleClickable
 
 @Composable
 fun CompanyInfoScreen(

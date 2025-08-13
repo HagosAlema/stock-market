@@ -1,4 +1,4 @@
-package com.hagos.stockmarket.ui.theme
+package com.hagos.stockmarket.theme
 
 import androidx.compose.ui.graphics.Color
 

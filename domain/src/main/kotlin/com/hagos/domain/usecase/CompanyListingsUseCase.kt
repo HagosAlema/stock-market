@@ -12,5 +12,4 @@ class CompanyListingsUseCase @Inject constructor(
     override suspend fun implement(input: Pair<Boolean, String>): List<CompanyListing> {
         return stockRepository.getCompanyListings(input.first, input.second)
     }
-
 }
